@@ -40,7 +40,7 @@ app.get("/contacts/:contactId", async (req, res) => {
     res.status(200).json({
       status: 200,
       message: `Successfully found contact with id ${contactId}!`,
-      data: {},
+      data: contact,
     });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error' });
