@@ -8,21 +8,9 @@ export const getContactById = async (contactId) => {
 
 export const addContact = payload => ContactCollection.create(payload);
 
-export const updateContact = async (contactId, payload, options = {}) => {
-  const { upsert } = options;
-
-  const rawResult = await ContactCollection.findByIdAndUpdate(contactId, payload, {
-    new: true,
-    upsert,
-    rawResult: true,
-  });
-
-  if (!rawResult || !rawResult.value) return null;
-
-  return {
-    data: rawResult.value,
-    isNew: Boolean(rawResult.lastErrorObject?.upserted),
+export const updateContact = async (contactId, payload) => {
+  const data = await ContactCollection.findByIdAndUpdate(contactId, payload, {new: true,});
+  return data;
   };
-};
 
 export const deleteContactById = contactId => ContactCollection.findOneAndDelete(contactId);
