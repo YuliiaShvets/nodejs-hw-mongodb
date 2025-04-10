@@ -2,9 +2,7 @@ import ContactCollection from "../db/models/contacts.js";
 
 export const getContacts = () => ContactCollection.find();
 
-export const getContactById = async (contactId) => {
-    return await ContactCollection.findById(contactId);
-  };
+export const getContactById = (contactId) => ContactCollection.findById(contactId);
 
 export const addContact = payload => ContactCollection.create(payload);
 
