@@ -17,8 +17,8 @@ app.use(logger);
 
 app.use("/contacts", contactsRouter); 
 
-app.use(errorHandler);
 app.use(notFoundHandler);
+app.use(errorHandler);
 
 
 
