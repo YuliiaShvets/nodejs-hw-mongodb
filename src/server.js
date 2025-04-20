@@ -3,19 +3,20 @@ import cors from "cors";
 import { logger } from "./middlewres/logger.js";
 import { notFoundHandler } from "./middlewres/notFoundHandler.js";
 import { errorHandler } from "./middlewres/errorHandler.js";
-import contactsRouter from "./routers/contacts.js";
+import router from './routers/index.js';
 import { getEnvVar } from "./utils/getEnvVar.js";
-
+import cookieParser from 'cookie-parser';
 
 
 export const setupServer = () => {
   const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(logger);
 
-app.use("/contacts", contactsRouter); 
+app.use(router); 
 
 app.use(notFoundHandler);
 app.use(errorHandler);

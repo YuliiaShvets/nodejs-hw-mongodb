@@ -8,18 +8,21 @@ import { getContactsController,
 import { validateBody } from "../utils/validateBody.js";
 import { createContactSchema, updateContactSchema } from "../validation/contacts.js";
 import { isValidId } from "../middlewres/isValidId.js";
+import { authenticate } from '../middlewres/authenticate.js';
 
-const contactsRouter = Router();
+const router = Router();
 
-contactsRouter.get("/", ctrlWrapper(getContactsController));
+router.use(authenticate);
 
-contactsRouter.get("/:contactId", isValidId, ctrlWrapper(getContactByIdController));
+router.get("/", ctrlWrapper(getContactsController));
 
-contactsRouter.post("/", validateBody(createContactSchema), ctrlWrapper(addContactController));
+router.get("/:contactId", isValidId, ctrlWrapper(getContactByIdController));
 
-contactsRouter.patch("/:contactId", isValidId, validateBody(updateContactSchema), ctrlWrapper(patchContactController));
+router.post("/", validateBody(createContactSchema), ctrlWrapper(addContactController));
 
-contactsRouter.delete("/:contactId", isValidId, ctrlWrapper(deleteContactController));
+router.patch("/:contactId", isValidId, validateBody(updateContactSchema), ctrlWrapper(patchContactController));
+
+router.delete("/:contactId", isValidId, ctrlWrapper(deleteContactController));
 
 
-export default contactsRouter;
+export default router;
