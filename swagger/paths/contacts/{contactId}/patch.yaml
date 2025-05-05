@@ -12,6 +12,39 @@ parameters:
     schema:
       type: string
       example: '65ca67e7ae7f10c88b598384'
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            description: "Contact's name"
+            example: 'John Smith'
+          phoneNumber:
+            type: string
+            description: "Contact's phone number"
+            example: '+380951234567'
+          contactType:
+            type: string
+            enum: ['work', 'home', 'personal']
+            description: "Contact type"
+            example: 'personal'
+          isFavourite:
+            type: boolean
+            description: "Favourite contact"
+            example: false
+          email:
+            type: string
+            format: email
+            description: "Contact's email"
+            example: 'smith@example.com'
+          photo:
+            type: string
+            format: binary
+            description: "Updated contact photo"
 responses:
   '200':
     description: 'Update contact by id'

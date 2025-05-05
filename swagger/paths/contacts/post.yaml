@@ -6,6 +6,7 @@ description: 'Create a contact with payload'
 security:
   - bearerAuth: []
 requestBody:
+  required: true
   content:
     multipart/form-data:
       schema:
@@ -14,25 +15,33 @@ requestBody:
           - name
           - phoneNumber
           - contactType
-          - userId
         properties:
           name:
-            description: "Contact's name"
             type: string
+            description: "Contact's name"
             example: 'John Doe'
           phoneNumber:
-            description: "Contact's phoneNumber"
             type: string
-            example: +369857412368
+            description: "Contact's phone number"
+            example: '+369857412368'
           contactType:
-            description: "Contact's type"
             type: string
-            enum: ["work", "home", "personal"]
-            example: "work"
-          userId:
-            description: "Contact's userId"
+            enum: ['work', 'home', 'personal']
+            description: "Type of contact"
+            example: 'work'
+          isFavourite:
+            type: boolean
+            description: "Favourite contact"
+            example: true
+          email:
             type: string
-            example: 65e4decdd286b30065d54af9
+            format: email
+            description: "Contact's email"
+            example: 'john@example.com'
+          photo:
+            type: string
+            format: binary
+            description: "Contact photo (optional)"
 responses:
   '201':
     description: Creates a contact
