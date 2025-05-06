@@ -14,7 +14,7 @@
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://example.com/api/v1"
+      "url": "https://nodejs-hw-mongodb-12-82tw.onrender.com"
     }
   ],
   "tags": [
@@ -45,16 +45,21 @@
           {
             "in": "query",
             "name": "page",
+            "required": false,
             "schema": {
-              "type": "integer"
-            },
-            "example": 1
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "example": 1
+            }
           },
           {
             "in": "query",
             "name": "perPage",
+            "required": false,
             "schema": {
               "type": "integer",
+              "default": 4,
               "example": 4
             }
           },
@@ -63,6 +68,7 @@
             "name": "sortBy",
             "schema": {
               "type": "string",
+              "default": "_id",
               "example": "name"
             },
             "description": "All contact's fields can be mentioned. Default value - _id"
@@ -77,14 +83,6 @@
                 "desc"
               ],
               "example": "asc"
-            }
-          },
-          {
-            "in": "query",
-            "name": "phoneNumber",
-            "schema": {
-              "type": "string",
-              "example": 325698745
             }
           },
           {
@@ -106,22 +104,6 @@
                 "personal"
               ],
               "example": "personal"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string",
-              "example": "jbhfhvjbjk@gmail.com"
-            }
-          },
-          {
-            "in": "query",
-            "name": "userId",
-            "schema": {
-              "type": "object",
-              "example": "hbbj7hhbbjn8jbjhvcc"
             }
           }
         ],
@@ -213,6 +195,7 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -220,34 +203,44 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "contactType",
-                  "userId"
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
-                    "description": "Contact's name",
                     "type": "string",
+                    "description": "Contact's name",
                     "example": "John Doe"
                   },
                   "phoneNumber": {
-                    "description": "Contact's phoneNumber",
                     "type": "string",
-                    "example": 369857412368
+                    "description": "Contact's phone number",
+                    "example": "+369857412368"
                   },
                   "contactType": {
-                    "description": "Contact's type",
                     "type": "string",
                     "enum": [
                       "work",
                       "home",
                       "personal"
                     ],
+                    "description": "Type of contact",
                     "example": "work"
                   },
-                  "userId": {
-                    "description": "Contact's userId",
+                  "isFavourite": {
+                    "type": "boolean",
+                    "description": "Favourite contact",
+                    "example": true
+                  },
+                  "email": {
                     "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
+                    "format": "email",
+                    "description": "Contact's email",
+                    "example": "john@example.com"
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Contact photo (optional)"
                   }
                 }
               }
@@ -372,6 +365,54 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Contact's name",
+                    "example": "John Smith"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "description": "Contact's phone number",
+                    "example": "+380951234567"
+                  },
+                  "contactType": {
+                    "type": "string",
+                    "enum": [
+                      "work",
+                      "home",
+                      "personal"
+                    ],
+                    "description": "Contact type",
+                    "example": "personal"
+                  },
+                  "isFavourite": {
+                    "type": "boolean",
+                    "description": "Favourite contact",
+                    "example": false
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Contact's email",
+                    "example": "smith@example.com"
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Updated contact photo"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Update contact by id",
@@ -431,34 +472,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Delete contact by id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "message",
-                    "data"
-                  ],
-                  "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 204
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Successfully delete contact with id 65ca67e7ae7f10c88b598384!"
-                    },
-                    "data": {
-                      "type": "object",
-                      "$ref": "#/components/schemas/contact"
-                    }
-                  }
-                }
-              }
-            }
+          "204": {
+            "description": "Successfully deleted contact"
           },
           "404": {
             "$ref": "#/components/responses/404"
